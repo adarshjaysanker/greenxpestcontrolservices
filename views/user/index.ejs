@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="/css/icomoon.css">
     <link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Bootstrap CSS (from a CDN) -->
+
 
 	
 
@@ -164,6 +168,91 @@
     background-color: #128c7e; /* Darker shade of green on hover */
   }
 
+  #reviewCarousel{
+	background-color: #fff;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next{
+	background-color: rgba(0,0,0,0.5);
+	padding: 10px;
+  }
+
+  .carousel-indicators{
+	bottom: 10px;
+  }
+
+  .carousel-item{
+	padding: 20px;
+	text-align: center;
+  }
+
+  .user-img{
+	width : 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-size: cover;
+  }
+
+  .position{
+	color: #777;
+  }
+
+  .carousel-item .testimony-wrap{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+  }
+
+  
+
+  .dropdown{
+	position: relative;
+	display: inline-block;
+  }
+  .dropdown-menu{
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	max-height: 300px;
+	overflow-y : auto;
+  }
+
+  .dropdown.show .dropdown-menu{
+	text-decoration: none;
+	color: #333;
+	display: block;
+	padding: 5px 0;
+	transition: background-color 0.3s;
+  }
+
+  .dropdown-menu a :hover{
+	background-color: #f5f5f5;
+  }
+
+  .dropdown-menu p{
+	color: #999;
+	font-style: italic;
+	margin: 0;
+  }
+
+  #nameerror{
+	color: #4e9525;
+  }
+  #emailerror{
+	color: #4e9525;
+  }
+  #reviewerror{
+	color: #4e9525;
+  }
+
 
 
 	</style>
@@ -175,27 +264,35 @@
 				<div class="col-md-8 order-md-last">
 					<div class="row">
 						<div class="col-md-6 text-center">
-							<a class="navbar-brand" href="/users">GREEN<span>X</span></a>
+							<a class="navbar-brand" href="/">GREEN<span>X</span></a>
 						</div>
 						<div class="col-md-6 d-md-flex justify-content-end mb-md-0 mb-3">
-							<form action="#" class="searchform order-lg-last">
+					<form action="#" class="searchform order-lg-last">
 			          <div class="form-group d-flex">
-			            <input type="text" class="form-control pl-3" placeholder="Search">
-			            <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
+			            <input type="text" id="search-box" class="form-control pl-3" placeholder="Search" onkeyup="sendData(this)">
+						
 			          </div>
+					 
 			        </form>
+					<p id="no-results" style="display: none;">Sorry...Nothing Found</p>
+					<div class="dropdown" id="search-dropdown">
+						<ul class="dropdown-menu" id="searchresults">
+							<!-- Search results will be displayed here -->
+						</ul>
+					</div>
+					
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 d-flex">
-					<div class="social-media">
+					<!-- <div class="social-media">
 		    		<p class="mb-0 d-flex">
 		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
 		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
 		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
 		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
 		    		</p>
-	        </div>
+	        </div> -->
 				</div>
 			</div>
 		</div>
@@ -208,22 +305,21 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav m-auto">
 	        	<li class="nav-item active"><a href="/users" class="nav-link">Home</a></li>
-	        	<li class="nav-item"><a href="about.html" class="nav-link">About us</a></li>
+	        	<!-- <li class="nav-item"><a href="about.html" class="nav-link">About us</a></li> -->
+	
             <li class="nav-item dropdown">
 				<a href="" class="nav-link dropdown-toggle" id="servicesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Services
 				</a>
 				<div class="dropdown-menu" aria-labelledby="servicesDropdown">
-					<a class="dropdown-item" href="/users/services/rodentcontrolservice">Rodent Control Service</a>
-					<a class="dropdown-item" href="/users/services/birdnetting">Bird Netting</a>
-					<a class="dropdown-item" href="/users/services/generalpestcontrolservice">General Pest Control Service</a>
-					<a class="dropdown-item" href="/users/services/termitecontrol">Termite Control Service</a>
-					<a class="dropdown-item" href="/users/services/bedbugcontrol">Bed Bug Control Service</a>
+					<% services.forEach(service=>{%>
+						<a class="dropdown-item" href="/services/<%=service.servicetitle%>"><%=service.serviceName%></a>
+					<%})%>
 				</div>
 			</li>
-	        	<li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
-	        	<li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="/users/contact" class="nav-link">Contact</a></li>
+	        	<!-- <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li> -->
+	        	<!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
+	          <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
 	        </ul>
 	      </div>
 	    </div>
@@ -238,14 +334,14 @@
           	<h2 class="subheading">GREENX</h2>
           	<h1>Unwanted Guests? We show them the Door!!!</h1>
             <p class="mb-4">Secure Spaces Happy Faces</p>
-            <p><a href="#" class="btn btn-primary mr-md-4 py-2 px-4">Learn more <span class="ion-ios-arrow-forward"></span></a></p>
+            <!-- <p><a href="#learn_more" class="btn btn-primary mr-md-4 py-2 px-4">Learn more <span class="ion-ios-arrow-forward"></span></a></p> -->
           </div>
         </div>
       </div>
     </div>
 
     <section class="ftco-section ftco-no-pt">
-		<div class="container">
+		<div id="learn_more" class="container">
 			<b><h2 class="mb-4 text-center mt-4">WHY CHOOSE US?</h2></b>
 			<p style="color: black;">We offer a range of exclusive service, which are executed by skilled, polite and responsible trade persons. 
 				Our mission is to provide world class pest control services and to be responsive to the individual needs of our customer.</p>
@@ -310,7 +406,7 @@
     		<div class="row d-flex">
     			<div class="col-md-6 d-flex">
     				<div class="img img-video d-flex align-self-stretch align-items-center justify-content-center justify-content-md-end" style="background-image:url(images/pest.png);">
-    					<a href="https://vimeo.com/45830194" class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
+    					<a href="vedios/greenx.mp4" class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
     						<span class="icon-play"></span>
     					</a>
     				</div>
@@ -322,19 +418,19 @@
 		            <h2 class="mb-4">Explore Our Services</h2>
 		            <p style="color: black;">Discover how we can protect your home or business, preserve your peace, and maintain a clean, pest-free environment. Explore our comprehensive range of services designed to meet your specific needs</p>
 		            <div class="services-wrap">
-		            	<a href="/users/services/rodentcontrolservice" class="services-list">Rodent Control Service
+		            	<a href="/services/rodentcontrolservice" class="services-list">Rodent Control Service
 		            		<div class="btn-custom d-flex align-items-center justify-content-center"><span class="ion-ios-arrow-round-forward"></span></div>
 		            	</a>
-		            	<a href="/users/services/birdnetting" class="services-list">Bird Netting
+		            	<a href="/services/birdnetting" class="services-list">Bird Netting
 		            		<div class="btn-custom d-flex align-items-center justify-content-center"><span class="ion-ios-arrow-round-forward"></span></div>
 		            	</a>
-		            	<a href="/users/services/generalpestcontrolservice" class="services-list">General Pest Control Service
+		            	<a href="/services/generalpestcontrolservice" class="services-list">General Pest Control Service
 		            		<div class="btn-custom d-flex align-items-center justify-content-center"><span class="ion-ios-arrow-round-forward"></span></div>
 		            	</a>
-		            	<a href="/users/services/termitecontrol" class="services-list">Termite Control Service
+		            	<a href="/services/termitecontrol" class="services-list">Termite Control Service
 		            		<div class="btn-custom d-flex align-items-center justify-content-center"><span class="ion-ios-arrow-round-forward"></span></div>
 		            	</a>
-		            	<a href="/users/services/bedbugcontrol" class="services-list">Bed Bug Services
+		            	<a href="/services/bedbugcontrol" class="services-list">Bed Bug Services
 		            		<div class="btn-custom d-flex align-items-center justify-content-center"><span class="ion-ios-arrow-round-forward"></span></div>
 		            	</a>
 		            </div>
@@ -361,7 +457,7 @@
 			        		<div class="seasonal img d-flex align-items-center justify-content-center" style="background-image: url(images/net1.webp);">
 			        		</div>
 			        		<div class="text text-center px-4">
-		        				<h3><a href="#">dsvds</a></h3>
+		        				<h3><a href="#"></a></h3>
 		        				
 		        			</div>
 		        		</div>
@@ -371,7 +467,7 @@
 			        		<div class="seasonal img d-flex align-items-center justify-content-center" style="background-image: url(images/pigeon-net.jpg);">
 			        		</div>
 			        		<div class="text text-center px-4">
-		        				<h3><a href="#">hsdbcsd</a></h3>
+		        				<h3><a href="#"></a></h3>
 		        				
 		        			</div>
 		        		</div>
@@ -381,7 +477,7 @@
 			        		<div class="seasonal img d-flex align-items-center justify-content-center" style="background-image: url(images/nets3.webp);">
 			        		</div>
 			        		<div class="text text-center px-4">
-		        				<h3><a href="#">gwrgwrg</a></h3>
+		        				<h3><a href="#"></a></h3>
 		        				
 		        			</div>
 		        		</div>
@@ -391,7 +487,7 @@
 			        		<div class="seasonal img d-flex align-items-center justify-content-center" style="background-image: url(images/nets3.webp);">
 			        		</div>
 			        		<div class="text text-center px-4">
-		        				<h3><a href="#">fgregerrgv</a></h3>
+		        				<h3><a href="#"></a></h3>
 		        				
 		        			</div>
 		        		</div>
@@ -409,7 +505,7 @@
 			</p>
         	</div>
         </div>
-		<a href="learn_more.html" class="btn btn-secondary">Learn More</a>
+		<a href="/services/birdnetting" class="btn btn-secondary">Learn More</a>
     	</div>
     </section>
 
@@ -422,6 +518,11 @@
 				</div>
 				<div class="col-md-5 text-md-right">
 					<span class="contact-number">91+ 8943244514</span>
+					<a href="https://web.whatsapp.com/send?phone=918943244514&text=
+			  Hello%2C%20I%20have%20a%20question." target="_blank">
+				<button class="whatsapp-button">Start WhatsApp Chat</button>
+			  </a>
+			  
 				</div>
 			</div>
 		</div>
@@ -438,81 +539,48 @@
             <h2 class="mb-4">Happy Clients</h2>
           </div>
         </div>
-        <div class="row ftco-animate">
-          <div class="col-md-12">
-            <div class="carousel-testimony owl-carousel ftco-owl">
-              <div class="item">
-                <div class="testimony-wrap py-4">
-                  <div class="text">
-                    <p class="mb-4"></p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name"></p>
-		                    <span class="position"></span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4">
-                  <div class="text">
-                    <p class="mb-4"></p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name"></p>
-		                    <span class="position"></span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4">
-                  <div class="text">
-                    <p class="mb-4"></p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_3.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name"></p>
-		                    <span class="position"></span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4">
-                  <div class="text">
-                    <p class="mb-4"></p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name"></p>
-		                    <span class="position"></span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4">
-                  <div class="text">
-                    <p class="mb-4"></p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name"></p>
-		                    <span class="position"></span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div id="reviewCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators (optional) -->
+			<ol class="carousel-indicators">
+				<!-- You can dynamically generate these indicators if needed -->
+				<!-- <li data-target="#reviewCarousel" data-slide-to="0" class="active"></li> -->
+				<!-- <li data-target="#reviewCarousel" data-slide-to="1"></li> -->
+				<!-- ... -->
+			</ol>
+		
+			<!-- Slides -->
+			<div class="carousel-inner">
+				<!-- Loop through your reviews and create a slide for each one -->
+				<% reviews.forEach(function (review, index) { %>
+					<div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+						<div class="testimony-wrap py-4">
+							<div class="text">
+								<p class="name"><%= review.review %></p>
+								
+								<div class="d-flex align-items-center">
+									<!-- Add your user image here -->
+									<div class="pl-3">
+										<p class="mb-4"><%= review.name %></p>
+										<span class="position"><%= review.email %></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% }); %>
+			</div>
+		
+			<!-- Controls (optional) -->
+			<a class="carousel-control-prev"  href="#reviewCarousel" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" ></span>
+				<span class="sr-only" style="display: block; color: #007bff;">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#reviewCarousel" role="button" data-slide="next">
+				<span class="carousel-control-next-icon"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+		
         </div>
       </div>
     </section>
@@ -529,26 +597,31 @@
 		  <div class="row">
 			<div class="col-md-6 ftco-animate">
 			  <!-- WhatsApp Chat Button -->
-			  <a href="https://web.whatsapp.com/send?phone=918943244514&text=Hello%2C%20I%20have%20a%20question." target="_blank">
-				<button class="whatsapp-button">Start WhatsApp Chat</button>
-			  </a>
+			 
 			  
 			  <!-- You can add a form here for users to submit reviews -->
-			  <form action="submit_review.php" method="POST">
+			  <form id="reviewForm" >
 				<div class="form-group">
-				  <label for="name">Your Name</label>
-				  <input type="text" class="form-control" id="name" name="name" required>
+					<label for="name">Your Name</label>
+					<input type="text" class="form-control" id="name" name="name" required>
+					<div class="errormessage" id="nameerror"></div>
 				</div>
 				<div class="form-group">
-					<label for="name">E-mail</label>
+					<label for="email">E-mail</label>
 					<input type="email" class="form-control" id="email" name="email" required>
-				  </div>
-				<div class="form-group">
-				  <label for="review">Your Review</label>
-				  <textarea class="form-control" id="review" name="review" rows="4" required></textarea>
+					<div class="errormessage" id="emailerror"></div>
 				</div>
-				<button type="submit" class="btn btn-primary">Submit Review</button>
-			  </form>
+				<div class="form-group">
+					<label for="review">Your Review</label>
+					<textarea class="form-control" id="review" name="review" required></textarea>
+					<div class="errormessage" id="reviewerror"></div>
+				</div>
+				<button type="submit" id="submitButton" class="btn btn-primary">Submit Review</button>
+			</form>
+		
+			<div id="successMessage" class="alert alert-success" style="display: none;">
+				Review Added Successfully
+			</div>
 			</div>
 		  </div>
 		</div>
@@ -655,6 +728,118 @@
 
   gtag('config', 'UA-23581568-13');
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$("#submitButton").click(function(e){
+			e.preventDefault();
+			if(validateForm()){
+			var formData = $("#reviewForm").serialize();
+			$.ajax({
+				type : 'POST',
+				url : "/submitreview",
+				data : formData,
+				success : function(){
+					$("#successMessage").show().fadeOut(3000);
+					$('#reviewForm')[0].reset();
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+		}
+		})
+	
+    })
+
+	function validateForm(){
+		var name = document.getElementById('name').value;
+		var email = document.getElementById('email').value;
+		var review = document.getElementById('review').value;
+		document.getElementById('nameerror').innerHTML = '';
+		document.getElementById('emailerror').innerHTML = '';
+		document.getElementById('reviewerror').innerHTML = '';
+		var valid = true;
+		if(!name.trim() || !/^[a-zA-Z]+$/.test(name)){
+			document.getElementById('nameerror').innerHTML = 'Please enter your name';
+			valid = false;
+		}
+		if(!email.trim()){
+			document.getElementById('emailerror').innerHTML = 'Please enter your email'
+			valid = false;
+		}else if(!isValidEmail(email)){
+			document.getElementById('emailerror').innerHTML = 'Please enter a valid email address'
+			valid = false;
+		}
+		if(!review.trim() || !/^[a-zA-Z]+$/.test(review)){
+			document.getElementById('reviewerror').innerHTML = 'please enter your review';
+			valid = false;
+		}
+		return valid;
+	}
+
+	function isValidEmail(email){
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		return emailRegex.test(email);
+	}
+</script>
+
+<script>
+	
+	function sendData(e){
+		const searchResults = document.getElementById('searchresults');
+		const searchDropdown = document.getElementById('search-dropdown');
+		const noResults = document.getElementById('no-results');
+		const searchTerm = e.value.trim();
+		let match = searchTerm.match(/^[a-zA-Z]*/);
+		if(searchTerm === ''){
+			searchResults.innerHTML = '';
+			searchDropdown.classList.remove('show');
+			noResults.style.display = 'none';
+			return;
+		}
+		if(match[0] === searchTerm){
+			fetch('/searchdata',{
+			method : 'POST',
+			headers : {'Content-Type' : 'application/json'},
+			body : JSON.stringify({payload : searchTerm})
+		}).then(res=>res.json()).then(data=>{
+			let payload = data.payload;
+			searchResults.innerHTML = ''
+			if(payload.length < 1){
+				searchDropdown.classList.remove('show');
+				noResults.style.display = 'block';
+				return;
+			}
+			payload.forEach((item,index)=>{
+				if(index > 0) searchResults.innerHTML += '<hr>';
+				searchResults.innerHTML += `<a href='/users/services/${item.servicetitle}'>${item.serviceName}</a>`;
+			});
+			searchDropdown.classList.add('show');
+			return;
+		})
+		}else{
+			searchDropdown.classList.add('show');
+			noResults.style.display = 'none';
+			return;
+		}
+		
+	}
+</script>
+
+<script>
+	document.getElementById()
+</script>
+
+
+</body>
+</html>
+
+
     
   </body>
 </html>

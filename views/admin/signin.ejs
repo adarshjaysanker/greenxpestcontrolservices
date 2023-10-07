@@ -29,6 +29,15 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        #emailerror{
+            color: red;
+        }
+        #passworderror{
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,28 +57,34 @@
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <a href="index.html" class="">
-                                <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DarkPan</h3>
-                            </a>
-                            <h3>Sign In</h3>
+                            
+                                <h3 class="text-primary"></i>GREENX</h3>
+                            
+                            <h3>LOGIN</h3>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                            <label for="floatingInput">Email address</label>
+                        <div class="container">
+                            <form id="loginForm" >
+                                <div class="form-group">
+                                    <label for="email">Email address:</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div id="emailerror"></div>
+                                <div class="form-group">
+                                    <label for="password">Password:</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <div id="passworderror"></div> 
+                                </div>
+                                <div id="passworderror"></div> 
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="showPassword">
+                                    <label class="form-check-label" for="showPassword">Show Password</label>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <button type="submit" class="btn btn-primary">Sign In</button>
+                                </div>
+                            </form>
+                            <p><a href="/admin/forgotpassword">Forgot Password?</a></p>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                            <label for="floatingPassword">Password</label>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                            </div>
-                            <a href="">Forgot Password</a>
-                        </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                        <p class="text-center mb-0">Don't have an Account? <a href="">Sign Up</a></p>
                     </div>
                 </div>
             </div>
@@ -90,6 +105,51 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const emailError = document.getElementById('emailerror')
+        const passwordError = document.getElementById('passworderror');
+        loginForm.addEventListener('submit',async (e)=>{
+            e.preventDefault();
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailRegex.test(email)){
+                emailError.textContent = 'Please enter a valid email id';
+                return;
+            }
+            if(password.length<6){
+                passwordError.textContent = 'Password must be atleast 6 characters long';
+            }          
+            try{
+                const res = await fetch('/admin/login',{
+                    method : 'POST',
+                    body : JSON.stringify({email,password}),
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    }
+                });
+                const data = await res.json();
+                console.log(data);
+                if(data.errors){
+                    emailError.textContent = data.errors.email;
+                    passwordError.textContent = data.errors.password;
+                }
+                if(data.admin){
+                    location.assign('/admin')
+                }
+            }catch(error){
+                console.log(error);
+            }
+        })
+    </script>
+   
+   
+
 </body>
 
 </html>

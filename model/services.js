@@ -15,10 +15,7 @@ const servicesSchema = new mongoose.Schema({
        
     },
     serviceFeatures :{
-        type : String
-    },
-    servicePrice : {
-        type : String,
+        type : Object
     },
     serviceImage : {
         type : String,
