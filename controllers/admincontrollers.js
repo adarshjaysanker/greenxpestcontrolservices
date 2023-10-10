@@ -255,7 +255,7 @@ module.exports = {
       admin.resetPasswordExpires = expirationDate;
       await admin.save();
 
-      const resetLink = `http://localhost:3000/admin/reset-password/${token}`;
+      const resetLink = `http://greenxpcs.com/admin/reset-password/${token}`;
       const mailOptions = {
         from : 'greenxpcs@gmail.com',
         to : email,

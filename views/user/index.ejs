@@ -764,7 +764,7 @@
 		document.getElementById('emailerror').innerHTML = '';
 		document.getElementById('reviewerror').innerHTML = '';
 		var valid = true;
-		if(!name.trim() || !/^[a-zA-Z]+$/.test(name)){
+		if(!name.trim() || !/^[a-zA-Z\s]+$/.test(name)){
 			document.getElementById('nameerror').innerHTML = 'Please enter your name';
 			valid = false;
 		}
@@ -775,7 +775,7 @@
 			document.getElementById('emailerror').innerHTML = 'Please enter a valid email address'
 			valid = false;
 		}
-		if(!review.trim() || !/^[a-zA-Z]+$/.test(review)){
+		if(!review.trim() || !/^[a-zA-Z\s\S]+$/.test(review)){
 			document.getElementById('reviewerror').innerHTML = 'please enter your review';
 			valid = false;
 		}
@@ -817,7 +817,7 @@
 			}
 			payload.forEach((item,index)=>{
 				if(index > 0) searchResults.innerHTML += '<hr>';
-				searchResults.innerHTML += `<a href='/users/services/${item.servicetitle}'>${item.serviceName}</a>`;
+				searchResults.innerHTML += `<a href='/services/${item.servicetitle}'>${item.serviceName}</a>`;
 			});
 			searchDropdown.classList.add('show');
 			return;
