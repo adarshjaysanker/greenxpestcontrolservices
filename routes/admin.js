@@ -23,7 +23,10 @@ const {
   adminForgotPassword,
   passwordReset,
   postPasswordReset,
-  deleteReview
+  deleteReview,
+  getGalleryPage,
+  getAddPhotoPage,
+  postAddPhoto
   
 } = require("../controllers/admincontrollers");
 
@@ -37,7 +40,10 @@ router.post('/editservice/:serviceId',requireAuth,upload.single("serviceImage"),
 router.delete('/deleteservice/:serviceId',requireAuth,deleteService);
 router.get('/reviews',requireAuth,checkUser,getReviewsPage);
 router.post('/togglereview',requireAuth,toggleReview);
-router.delete('/deletereview/:reviewId',deleteReview)
+router.delete('/deletereview/:reviewId',deleteReview);
+router.get('/gallery',getGalleryPage);
+router.get('/getaddphotopage',getAddPhotoPage);
+router.post('/addphoto',upload.single('image'),postAddPhoto)
 router.get('/login',getLoginPage);
 router.post('/login',adminLogin);
 router.get('/signup',getSignupPage);

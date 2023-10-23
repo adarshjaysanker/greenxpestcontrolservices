@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Service = require("../model/services");
 const Review = require('../model/reviews');
+const Gallery = require('../model/gallery')
 const transporter = require('../middlewares/nodemailer')
 
 module.exports = {
@@ -34,6 +35,16 @@ module.exports = {
     }catch(error){
         console.error(error);
         res.status(500).send('Internal server error');
+    }
+   },
+
+   getGalleryPage : async(req,res)=>{
+    try{
+        const galleryImages = await Gallery.find();
+        const services = await Service.find();
+        res.render('user/gallery',{galleryImages,services});
+    }catch(error){
+        console.log(error);
     }
    },
 

@@ -6,6 +6,7 @@ const session = require('express-session')
 const Service = require("../model/services");
 const Reviews = require('../model/reviews');
 const Admin = require('../model/admin');
+const Gallery = require('../model/gallery')
 const crypto = require('crypto');
 const transporter = require('../middlewares/nodemailer')
 
@@ -308,7 +309,42 @@ module.exports = {
       console.error(error);
       res.status(500).json({message : 'Failed to reset password'});
     }
-  }
+  },
+
+  getGalleryPage : async(req,res)=>{
+    try{
+      const images = await Gallery.find({},'image name');
+      res.render('admin/gallery',{images});
+    }catch(error){
+      console.log(error);
+      res.status(500).send('Internal Server Error');
+    }
+  },
+
+  getAddPhotoPage : async(req,res)=>{
+    try{
+      res.render('admin/addphoto')
+    }catch(error){
+      console.log(error);
+    }
+  },
+
+  postAddPhoto: async (req, res) => {
+    try {
+        const { imageName } = req.body;
+        const image = req.file ? req.file.filename : null;
+        const newGallery = new Gallery({
+            image: image,
+            name: imageName,
+        });
+        await newGallery.save();
+        res.json({ message: "photo added successfully" });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 
 };
