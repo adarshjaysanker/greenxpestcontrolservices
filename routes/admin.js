@@ -26,7 +26,8 @@ const {
   deleteReview,
   getGalleryPage,
   getAddPhotoPage,
-  postAddPhoto
+  postAddPhoto,
+  deleteImage
   
 } = require("../controllers/admincontrollers");
 
@@ -43,7 +44,8 @@ router.post('/togglereview',requireAuth,toggleReview);
 router.delete('/deletereview/:reviewId',deleteReview);
 router.get('/gallery',getGalleryPage);
 router.get('/getaddphotopage',getAddPhotoPage);
-router.post('/addphoto',upload.single('image'),postAddPhoto)
+router.post('/addphoto',upload.single('image'),postAddPhoto);
+router.delete("/deleteimage/:id",deleteImage);
 router.get('/login',getLoginPage);
 router.post('/login',adminLogin);
 router.get('/signup',getSignupPage);

@@ -121,12 +121,16 @@
     <div class="container-fluid pt-4 px-4" id="reviewsList">
             <div class="row g-4">
                 <% images.forEach(image => {%>
-                  <div class="col-sm-12 col-xl-6" data-service-id="">
+                  <div class="col-sm-12 col-xl-6" data-image-id="<%=image._id%>">
                     <div class="bg-secondary rounded h-100 p-4"> 
                     <div class="image-container">
                         
                         <img src="/uploads/<%=image.image%>" alt="<%=image.name%>" class="gallery-image">
                         <p class="image-name"><%=image.name%></p>
+
+                            <button type="button" class="btn btn-primary float-right delete-image" data-image-id="<%=image._id%>">
+                                Delete Image
+                            </button>
 
                     </div>
                     
@@ -205,6 +209,27 @@
     
 
    
+    <script>
+        $(document).ready(function(){
+            $(".delete-image").on("click",function(){
+                const imageId = $(this).data("image-id");
+
+                $.ajax({
+                    type : "DELETE",
+                    url : "/admin/deleteimage/"+imageId,
+                    success : function(data){
+                        console.log(data);
+                        if(data.success){
+                           $(this).closest('.col').remove();
+                        }else{
+                            $("#deleteerror").text("Failed to delete the image");
+                        }
+                    }.bind(this)
+                })
+            })
+        })
+    </script>
+    
 
 
 

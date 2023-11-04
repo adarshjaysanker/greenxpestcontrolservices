@@ -342,9 +342,24 @@ module.exports = {
     } catch (error) {
         console.log(error);
     }
+},
+
+deleteImage : async(req,res)=>{
+    const imageId = req.params.id;
+    try{
+      const deletedImage = await Gallery.findByIdAndRemove(imageId);
+      if(!deletedImage){
+        return res.json({success : false, message : "Image not found"});
+      }
+      return res.json({success : true, message : "Image deleted successfully"});
+    }catch(err){
+      console.error(err);
+      return res.json({success : false, message : "Failed to delete the image"});
+    }
+  }
 }
 
 
 
 
-};
+
